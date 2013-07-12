@@ -1,5 +1,6 @@
 from collections import defaultdict
 from cStringIO import StringIO
+from importlib import import_module
 
 # List of module names to process, for example MODULES=["model"]
 MODULES=[]
@@ -67,10 +68,18 @@ def superclass(dst): # dst is the parent class
 def fullname(clazz):
     return clazz.__module__ + "." + clazz.__name__
 
+def load_class(class_str):
+    class_parts = class_str.split('.')
+    if len(class_parts) == 1:
+        # class must be in current module; therefore it's already loaded.
+        return globals()[class_parts[0]]
+    else:
+        module = import_module('.'.join(class_parts[:-1]))
+        return getattr(module, class_parts[-1])
+
 def get_association(clazz, field_name, field, edge_fac=one_to_one):
     from mongoengine.fields import ReferenceField, ListField, \
         EmbeddedDocumentField, ObjectIdField
-    from utils import load_class
     dst = None
     fq_field = fullname(clazz) + "." + field_name
     if isinstance(field, ListField):
@@ -125,7 +134,6 @@ def create_dot(nodes, assocs, hierarchy):
 
 def main():
     from pkgutil import iter_modules
-    from importlib import import_module
     nodes = {}
     to_import = [(m_name,None) for m_name in MODULES]
     modules = []
