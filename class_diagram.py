@@ -1,3 +1,4 @@
+import sys
 from collections import defaultdict
 from cStringIO import StringIO
 from importlib import import_module
@@ -91,7 +92,7 @@ def get_association(clazz, field_name, field, edge_fac=one_to_one):
     elif fq_field in OID_MAP:
         dst = load_class(OID_MAP.get(fq_field, None))
     if field_name != "id" and isinstance(field, ObjectIdField) and dst is None:
-        print "Warning: %s does not have mapping" % fq_field
+        print >> sys.stderr, "Warning: %s does not have mapping" % fq_field
     return edge_fac(dst) if dst is not None else None
 
 def find_associations(nodes):
