@@ -1,8 +1,8 @@
 from collections import defaultdict
 from cStringIO import StringIO
 
-# List of module names to process
-MODULES=["model"]
+# List of module names to process, for example MODULES=["model"]
+MODULES=[]
 
 # Maps fully-qualified field name to a document type, indicating an assocation
 # between classes.
@@ -14,16 +14,6 @@ MODULES=["model"]
 #     "model.User.username": "model.legacy.User"
 # }
 OID_MAP={
-    "model.drugs.StandardFrequencies.active_ingredient":"model.drugs.ActiveIngredient",
-    "model.meds.MedOrder.active_ingredient":"model.drugs.ActiveIngredient",
-    "model.allergies.AllergyUpdate.substance_din":"model.drugs.Drug",
-    "model.allergies.DrugAllergy.substance_din":"model.drugs.Drug",
-    "model.visit.Visit.patient_id":"model.patient.Patient",
-    "model.sphafib.requisitions.Requisition.visit_id":"model.visit.Visit",
-    "model.sphafib.requisitions.Requisition.pt_id":"model.patient.Patient",
-    "model.sphafib.charts.ModalityFilter.user":"model.user.User",
-    "model.sphafib.allergies.Assessment.visit_id":"model.visit.Visit",
-    "model.sphafib.allergies.Assessment.pt_id":"model.patient.Patient"
 }
 
 class Edge():
